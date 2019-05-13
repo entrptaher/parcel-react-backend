@@ -1,0 +1,16 @@
+{
+  "name": "my-app",
+  "scripts": {
+    "start": "dotenv -e .env nodemon src/index.js",
+    "prisma": "dotenv -e .env prisma"
+  },
+  "dependencies": {
+    "dotenv": "^8.0.0",
+    "graphql-yoga": "1.17.4",
+    "prisma-client-lib": "1.32.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.0",
+    "prisma": "^1.32.2"
+  }
+}
