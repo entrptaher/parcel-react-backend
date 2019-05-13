@@ -2,6 +2,7 @@
 
 type Query {
   post(id: String!): Post
+  posts: [Post!]!
   feed: [Post!]!
   drafts: [Post!]!
 }

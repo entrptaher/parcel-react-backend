@@ -332,7 +332,7 @@ export interface ContentUpdateManyMutationInput {
 
 export interface PostCreateInput {
   id?: Maybe<ID_Input>;
-  user?: Maybe<UserCreateOneWithoutPostsInput>;
+  user: UserCreateOneWithoutPostsInput;
   published?: Maybe<Boolean>;
   title: String;
   content: ContentCreateOneInput;
@@ -355,18 +355,16 @@ export interface ContentCreateOneInput {
 }
 
 export interface PostUpdateInput {
-  user?: Maybe<UserUpdateOneWithoutPostsInput>;
+  user?: Maybe<UserUpdateOneRequiredWithoutPostsInput>;
   published?: Maybe<Boolean>;
   title?: Maybe<String>;
   content?: Maybe<ContentUpdateOneRequiredInput>;
 }
 
-export interface UserUpdateOneWithoutPostsInput {
+export interface UserUpdateOneRequiredWithoutPostsInput {
   create?: Maybe<UserCreateWithoutPostsInput>;
   update?: Maybe<UserUpdateWithoutPostsDataInput>;
   upsert?: Maybe<UserUpsertWithoutPostsInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 

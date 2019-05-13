@@ -8,7 +8,7 @@ type User {
 
 type Post {
   id: ID! @id
-  user: User @relation(link: INLINE)
+  user: User! @relation(link: INLINE)
   published: Boolean! @default(value: false)
   title: String!
   content: Content!

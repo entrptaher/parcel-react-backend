@@ -147,7 +147,7 @@ type PageInfo {
 
 type Post {
   id: ID!
-  user: User
+  user: User!
   published: Boolean!
   title: String!
   content: Content!
@@ -161,7 +161,7 @@ type PostConnection {
 
 input PostCreateInput {
   id: ID
-  user: UserCreateOneWithoutPostsInput
+  user: UserCreateOneWithoutPostsInput!
   published: Boolean
   title: String!
   content: ContentCreateOneInput!
@@ -254,7 +254,7 @@ input PostSubscriptionWhereInput {
 }
 
 input PostUpdateInput {
-  user: UserUpdateOneWithoutPostsInput
+  user: UserUpdateOneRequiredWithoutPostsInput
   published: Boolean
   title: String
   content: ContentUpdateOneRequiredInput
@@ -452,12 +452,10 @@ input UserUpdateManyMutationInput {
   password: String
 }
 
-input UserUpdateOneWithoutPostsInput {
+input UserUpdateOneRequiredWithoutPostsInput {
   create: UserCreateWithoutPostsInput
   update: UserUpdateWithoutPostsDataInput
   upsert: UserUpsertWithoutPostsInput
-  delete: Boolean
-  disconnect: Boolean
   connect: UserWhereUniqueInput
 }
 

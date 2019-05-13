@@ -1,43 +1,63 @@
-const { GraphQLServer } = require('graphql-yoga')
-const { prisma } = require('./generated/prisma-client')
+const { GraphQLServer } = require("graphql-yoga");
+const { prisma } = require("./generated/prisma-client");
+const { Prisma } = require("prisma-binding");
 
 const resolvers = {
   Query: {
-    feed: (parent, args, context) => {
-      return context.prisma.posts({ where: { published: true } })
+    posts: async (parent, args, context, info) => {
+      return context.prisma.query.posts({}, info);
     },
-    drafts: (parent, args, context) => {
-      return context.prisma.posts({ where: { published: false } })
+    feed: (parent, args, context, info) => {
+      return context.prisma.query.posts({ where: { published: true } }, info);
     },
-    post: (parent, { id }, context) => {
-      return context.prisma.post({ id })
+    drafts: (parent, args, context, info) => {
+      return context.prisma.query.posts({ where: { published: false } }, info);
     },
+    post: (parent, { id }, context, info) => {
+      return context.prisma.query.post({ where: { id } }, info);
+    }
   },
   Mutation: {
-    createDraft(parent, { title, content }, context) {
-      return context.prisma.createPost({
-        title,
-        content,
-      })
+    createDraft(parent, { title, content }, context, info) {
+      return context.prisma.mutation.createPost(
+        {
+          title,
+          content
+        },
+        info
+      );
     },
-    deletePost(parent, { id }, context) {
-      return context.prisma.deletePost({ id })
+    deletePost(parent, { id }, context, info) {
+      return context.prisma.mutation.deletePost({ id }, info);
     },
-    publish(parent, { id }, context) {
-      return context.prisma.updatePost({
-        where: { id },
-        data: { published: true },
-      })
-    },
-  },
-}
+    publish(parent, { id }, context, info) {
+      return context.prisma.mutation.updatePost(
+        {
+          where: { id },
+          data: { published: true }
+        },
+        info
+      );
+    }
+  }
+};
 
 const server = new GraphQLServer({
-  typeDefs: './src/schema.graphql',
+  typeDefs: "./src/schema.graphql",
   resolvers,
-  context: {
-    prisma,
+  resolverValidationOptions: {
+    requireResolversForResolveType: false
   },
-})
+  context: req => ({
+    ...req,
+    prisma: new Prisma({
+      typeDefs: "./src/generated/prisma.graphql",
+      endpoint: process.env.PRISMA_ENDPOINT,
+      debug: true
+    })
+  })
+});
 
-server.start(() => console.log('Server is running on http://localhost:4000'))
+server.start({ debug: true}, () =>
+  console.log("Server is running on http://localhost:4000")
+);
