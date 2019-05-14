@@ -34,3 +34,7 @@ graphql generate-fragments
 dotenv -e prisma deploy
 ```
 
+Run the actual server:
+```
+yarn run start
+```
